@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Physics Counter | Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .keyword { color: #569CD6; }
+        .type { color: #4EC9B0; }
+        .method { color: #DCDCAA; }
+        .string { color: #CE9178; }
+        .comment { color: #6A9955; }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100 font-sans antialiased selection:bg-cyan-500 selection:text-white">
+
+    <nav class="p-6 max-w-4xl mx-auto">
+        <a href="index.html" class="text-cyan-400 hover:text-cyan-300 transition-colors font-semibold flex items-center gap-2">
+            &larr; Back to Portfolio
+        </a>
+    </nav>
+
+    <header class="max-w-4xl mx-auto px-6 mt-4">
+        <h1 class="text-4xl md:text-5xl font-bold mb-4">Color Physics Counter</h1>
+        <p class="text-xl text-gray-400 mb-8">A real-time WebGL physics simulation demonstrating event-driven UI updates.</p>
+        
+        <!-- Reduced size (max-w-3xl) and centered (mx-auto) with looping video -->
+        <div class="max-w-3xl mx-auto aspect-video bg-gray-800 rounded-xl overflow-hidden border border-gray-700 shadow-2xl relative group">
+            <video src="assets/color counter demo.mp4" autoplay loop muted playsinline class="w-full h-full object-cover"></video>
+        </div>
+    </header>
+
+    <section class="max-w-4xl mx-auto px-6 py-8">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 p-6 bg-gray-800 rounded-xl border border-gray-700">
+            <div>
+                <h3 class="text-gray-400 text-sm font-semibold uppercase tracking-wider mb-1">Role</h3>
+                <p class="font-medium">Gameplay Programmer</p>
+            </div>
+            <div>
+                <h3 class="text-gray-400 text-sm font-semibold uppercase tracking-wider mb-1">Engine</h3>
+                <p class="font-medium text-yellow-400">Unity 6 (URP)</p>
+            </div>
+            <div>
+                <h3 class="text-gray-400 text-sm font-semibold uppercase tracking-wider mb-1">Platform</h3>
+                <p class="font-medium text-green-400">WebGL</p>
+            </div>
+            <div>
+                <h3 class="text-gray-400 text-sm font-semibold uppercase tracking-wider mb-1">Links</h3>
+                <a href="https://play.unity.com/api/v1/games/game/f11c77fe-eb99-4239-8049-746d521db3fa/build/latest/frame" class="text-cyan-400 hover:underline">Play on Unity Play</a>
+            </div>
+        </div>
+    </section>
+
+    <main class="max-w-3xl mx-auto px-6 py-8 space-y-16 text-lg text-gray-300 leading-relaxed">
+        
+        <section>
+            <h2 class="text-2xl font-bold text-white mb-4 border-b border-gray-700 pb-2">1. Project Overview</h2>
+            <p>
+                The <strong>Color Physics Counter</strong> is a real-time physics simulation built to demonstrate object interaction, event-driven UI updates, and web deployment. In this project, a spawner continuously drops dynamically generated colored spheres into a custom-built, translucent containment box. As the objects fall into the collection zone, the game instantly detects their properties and tallies them on the screen by color.
+            </p>
+        </section>
+
+        <section>
+            <h2 class="text-2xl font-bold text-white mb-4 border-b border-gray-700 pb-2">2. Architecture: Tag-Based Data Routing</h2>
+            <p class="mb-6">
+                To keep overhead low and avoid heavy component-fetching calls during collisions, I implemented a lightweight <code>Counter.cs</code> script. This script utilizes tag-based evaluation to route data. It ensures only valid game objects are processed and bridges the backend logic with Unity's UI Canvas by strictly updating the Text components only when a successful trigger event occurs.
+            </p>
+            <div class="bg-gray-950 rounded-xl p-6 border border-gray-700 font-mono text-sm overflow-x-auto shadow-inner">
+<pre><code><span class="comment">// Simplified logic for event-driven counting based on tags</span>
+<span class="keyword">private</span> <span class="keyword">void</span> <span class="method">OnTriggerEnter</span>(<span class="type">Collider</span> other) {
+    <span class="comment">// Evaluate interacting objects using Unity's tag system</span>
+    <span class="keyword">if</span> (other.<span class="method">CompareTag</span>(<span class="string">"Red"</span>)) {
+        redCount++;
+        <span class="method">UpdateUIText</span>(redText, redCount);
+    } 
+    <span class="keyword">else if</span> (other.<span class="method">CompareTag</span>(<span class="string">"Blue"</span>)) {
+        blueCount++;
+        <span class="method">UpdateUIText</span>(blueText, blueCount);
+    } 
+    <span class="keyword">else if</span> (other.<span class="method">CompareTag</span>(<span class="string">"Green"</span>)) {
+        greenCount++;
+        <span class="method">UpdateUIText</span>(greenText, greenCount);
+    }
+}</code></pre>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="text-2xl font-bold text-white mb-4 border-b border-gray-700 pb-2">3. Physics & Trigger Systems</h2>
+            <p>
+                I utilized Unity's physics engine by setting up a centralized trigger volume within the containment box (constructed from 3D cube primitives). The core logic relies on C# <code>OnTriggerEnter</code> events to register collisions. This approach ensures the counting logic triggers perfectly without impeding the physical momentum or bouncing behavior of the falling objects.
+            </p>
+        </section>
+
+        <section>
+            <h2 class="text-2xl font-bold text-white mb-4 border-b border-gray-700 pb-2">4. WebGL & URP Optimization</h2>
+            <p>
+                Successfully deploying the project to Unity Play via WebGL required specialized optimization of the Universal Render Pipeline (URP) for web browser compatibility. This involved modifying global shader settings, managing WebGL graphics APIs, and carefully adjusting color space environments to ensure the 3D scene rendered accurately online without severe performance hits.
+            </p>
+        </section>
+
+        <section>
+            <h2 class="text-2xl font-bold text-white mb-4 border-b border-gray-700 pb-2">5. Retrospective</h2>
+            <p>
+                This project served as an excellent practical application of Unity's event-driven architecture. By keeping the Counter script attached directly to the physical trigger zone rather than the individual spheres or the spawner, the architecture remains highly modular. The experience of debugging and publishing to Unity Play also provided valuable insight into the specific graphics and memory constraints of WebGL builds, ensuring future web-based projects will be structured for immediate browser compatibility.
+            </p>
+        </section>
+        
+    </main>
+</body>
+</html>

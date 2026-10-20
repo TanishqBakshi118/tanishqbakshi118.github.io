@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FastFav Runner | Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .keyword { color: #569CD6; }
+        .type { color: #4EC9B0; }
+        .method { color: #DCDCAA; }
+        .string { color: #CE9178; }
+        .comment { color: #6A9955; }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100 font-sans antialiased selection:bg-cyan-500 selection:text-white">
+
+    <nav class="p-6 max-w-4xl mx-auto">
+        <a href="index.html" class="text-cyan-400 hover:text-cyan-300 transition-colors font-semibold flex items-center gap-2">
+            &larr; Back to Portfolio
+        </a>
+    </nav>
+
+    <header class="max-w-4xl mx-auto px-6 mt-4">
+        <h1 class="text-4xl md:text-5xl font-bold mb-4">FastFav Runner</h1>
+        <p class="text-xl text-gray-400 mb-8">A stable, multi-vehicle dynamic physics and state system built in Unity.</p>
+        
+        <!-- Reduced size (max-w-3xl) and centered (mx-auto) with looping video -->
+        <div class="max-w-3xl mx-auto aspect-video bg-gray-800 rounded-xl overflow-hidden border border-gray-700 shadow-2xl relative group">
+            <video src="assets/FastFav demo.mp4" autoplay loop muted playsinline class="w-full h-full object-cover"></video>
+        </div>
+    </header>
+
+    <section class="max-w-4xl mx-auto px-6 py-8">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 p-6 bg-gray-800 rounded-xl border border-gray-700">
+            <div>
+                <h3 class="text-gray-400 text-sm font-semibold uppercase tracking-wider mb-1">Role</h3>
+                <p class="font-medium">Solo Developer</p>
+            </div>
+            <div>
+                <h3 class="text-gray-400 text-sm font-semibold uppercase tracking-wider mb-1">Engine</h3>
+                <p class="font-medium text-yellow-400">Unity (C#)</p>
+            </div>
+            <div>
+                <h3 class="text-gray-400 text-sm font-semibold uppercase tracking-wider mb-1">Status</h3>
+                <p class="font-medium text-green-400">Stable Prototype</p>
+            </div>
+            <div>
+                <h3 class="text-gray-400 text-sm font-semibold uppercase tracking-wider mb-1">Links</h3>
+                <a href="https://github.com/TanishqBakshi118/FastFav-Runner-Game" class="text-cyan-400 hover:underline">GitHub Repo</a>
+            </div>
+        </div>
+    </section>
+
+    <main class="max-w-3xl mx-auto px-6 py-8 space-y-16 text-lg text-gray-300 leading-relaxed">
+        
+        <section>
+            <h2 class="text-2xl font-bold text-white mb-4 border-b border-gray-700 pb-2">1. Project Overview</h2>
+            <p>
+                <strong>FastFav Runner</strong> is a stable prototype that successfully implements a seamless, on-the-fly vehicle switching mechanic inspired by <em>The Crew 2</em>. The core technical achievement of this project is the stable transition between entirely different movement paradigms (e.g., land to air) without physics clipping, frame drops, or input delay.
+            </p>
+        </section>
+
+        <section>
+            <h2 class="text-2xl font-bold text-white mb-4 border-b border-gray-700 pb-2">2. Architecture: Dynamic Mesh Swapping</h2>
+            <p class="mb-6">
+                To maintain high performance and prevent garbage collection (GC) spikes, I engineered the state machine to avoid instantiating and destroying GameObjects during vehicle transitions. The system uses a single, persistent player entity that dynamically swaps visual meshes and resizes colliders, all while retaining the Rigidbody's current velocity to preserve momentum.
+            </p>
+            <div class="bg-gray-950 rounded-xl p-6 border border-gray-700 font-mono text-sm overflow-x-auto shadow-inner">
+<pre><code><span class="comment">// Simplified logic for dynamically swapping vehicle meshes and bounds</span>
+<span class="keyword">public</span> <span class="keyword">void</span> <span class="method">SwapVehicle</span>(<span class="type">VehicleData</span> newData) {
+    <span class="comment">// Update visual representation without destroying the root object</span>
+    vehicleMeshFilter.mesh = newData.vehicleMesh;
+    vehicleRenderer.material = newData.vehicleMaterial;
+    
+    <span class="comment">// Dynamically resize the collider to match the new mesh bounds</span>
+    vehicleCollider.size = newData.colliderBounds;
+    
+    <span class="comment">// Update current state to route inputs to the correct movement logic</span>
+    currentMovementState = newData.movementType;
+    
+    <span class="comment">// Retain Rigidbody velocity to ensure smooth transition momentum</span>
+    ApplyTransitionMomentum();
+}</code></pre>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="text-2xl font-bold text-white mb-4 border-b border-gray-700 pb-2">3. Stable Rigidbody Physics</h2>
+            <p>
+                Rather than over-complicating the system with custom suspension raycasts, I constrained the prototype to utilize standard Unity Rigidbody physics combined with primitive colliders. By meticulously tuning the mass, drag, angular drag, and force application algorithms in C#, I established a highly controllable baseline. This ensures the core mechanic—the transition—is completely stable and responsive before introducing complex simulation layers.
+            </p>
+        </section>
+
+        <section>
+            <h2 class="text-2xl font-bold text-white mb-4 border-b border-gray-700 pb-2">4. Visual Polish & Game Feel</h2>
+            <p class="mb-6">
+                To elevate the stable mechanics, I integrated principles from the Unity Creative Core course. The sensation of speed and impact is driven heavily by targeted visual fidelity changes. I prioritized overall environmental lighting, vehicle shading, and camera feedback (such as FOV shifts and motion blur) over hyper-realistic assets, proving that strong art direction and post-processing can make a mechanically sound grey-box prototype visually compelling.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                <div class="aspect-video bg-gray-800 rounded-lg border border-gray-700 flex flex-col items-center justify-center p-4">
+                    <span class="text-cyan-400 font-bold mb-2">Stable Baseline</span>
+                    <span class="text-sm text-gray-400 text-center">Responsive Rigidbody forces</span>
+                </div>
+                <div class="aspect-video bg-gray-800 rounded-lg border border-gray-700 flex flex-col items-center justify-center p-4">
+                    <span class="text-cyan-400 font-bold mb-2">Environmental Polish</span>
+                    <span class="text-sm text-gray-400 text-center">Lighting and post-processing integration</span>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="text-2xl font-bold text-white mb-4 border-b border-gray-700 pb-2">5. Retrospective</h2>
+            <p>
+                Bringing FastFav Runner to a stable state solidified my understanding of Unity's component architecture. The project served as an excellent practical exercise in identifying which components are strictly necessary for a mechanic to function, and how to structure code so that future additions (like advanced aerodynamics) can be integrated without rewriting the foundational state machine.
+            </p>
+        </section>
+        
+    </main>
+</body>
+</html>
